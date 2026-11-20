@@ -1,0 +1,908 @@
+{
+  "date": "2026-10-31",
+  "observations": [
+    {
+      "request": "requests/C-01.json",
+      "backend": "pg",
+      "source": "04-cases/pg-c01.json",
+      "tables": [
+        "projects",
+        "erc_panels",
+        "project_erc_panels",
+        "project_members",
+        "institutions",
+        "countries"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_erc_panels",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_erc_panels",
+          "right": "cordis_temporary.erc_panels",
+          "on": "{source}.panel = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_erc_panels",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.erc_panels",
+          "right": "cordis_temporary.project_erc_panels",
+          "on": "{target}.code = {source}.panel"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 5,
+        "toolCalls": 7,
+        "latencyMs": 178640
+      }
+    },
+    {
+      "request": "requests/C-01.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c01.json",
+      "tables": [
+        "erc_panels",
+        "project_erc_panels",
+        "projects",
+        "project_members",
+        "institutions",
+        "countries"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_erc_panels",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_erc_panels",
+          "right": "cordis_temporary.erc_panels",
+          "on": "{source}.panel = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.erc_panels",
+          "right": "cordis_temporary.project_erc_panels",
+          "on": "{target}.code = {source}.panel"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.project"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 5,
+        "latencyMs": 170085
+      }
+    },
+    {
+      "request": "requests/C-04.json",
+      "backend": "pg",
+      "source": "04-cases/pg-c04-afterfill.json",
+      "tables": [
+        "projects",
+        "topics",
+        "project_topics"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.topics",
+          "on": "{source}.topic = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_topics",
+          "on": "{target}.unics_id = {source}.project"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 6,
+        "latencyMs": 166691
+      }
+    },
+    {
+      "request": "requests/C-04.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c04-afterfill.json",
+      "tables": [
+        "project_topics",
+        "projects",
+        "topics"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.topics",
+          "on": "{source}.topic = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_topics",
+          "on": "{target}.unics_id = {source}.project"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 3,
+        "toolCalls": 5,
+        "latencyMs": 142120
+      }
+    },
+    {
+      "request": "requests/C-06-default.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-r1.json",
+      "tables": [
+        "institutions",
+        "countries",
+        "project_members"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.countries",
+          "right": "cordis_temporary.institutions",
+          "on": "{target}.unics_id = {source}.country_id"
+        },
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.institution_id"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "ambiguous",
+        "triggeredBy": "vote_tie"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 8,
+        "latencyMs": 190543
+      }
+    },
+    {
+      "request": "requests/C-06-default.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-r2.json",
+      "tables": [
+        "countries",
+        "institutions"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval_org"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 12496
+      }
+    },
+    {
+      "request": "requests/C-06-default.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-r3.json",
+      "tables": [
+        "countries",
+        "institutions"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval_org"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 8932
+      }
+    },
+    {
+      "request": "requests/C-06-default.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-r4.json",
+      "tables": [
+        "countries",
+        "institutions"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval_org"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 25130
+      }
+    },
+    {
+      "request": "requests/C-06-default.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-r5.json",
+      "tables": [
+        "institutions",
+        "countries",
+        "project_members"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.countries",
+          "right": "cordis_temporary.institutions",
+          "on": "{target}.unics_id = {source}.country_id"
+        },
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.institution_id"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "ambiguous",
+        "triggeredBy": "vote_tie"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 6,
+        "latencyMs": 181234
+      }
+    },
+    {
+      "request": "requests/C-06-explicit.json",
+      "backend": "pg",
+      "source": "04-cases/pg-c06-explicit-eval.json",
+      "tables": [
+        "project_members",
+        "institutions",
+        "countries"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 4,
+        "latencyMs": 150057
+      }
+    },
+    {
+      "request": "requests/C-06-explicit.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-explicit-r1.json",
+      "tables": [
+        "institutions",
+        "countries",
+        "project_members"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.countries",
+          "right": "cordis_temporary.institutions",
+          "on": "{target}.unics_id = {source}.country_id"
+        },
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.institution_id"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 5,
+        "latencyMs": 104736
+      }
+    },
+    {
+      "request": "requests/C-06-explicit.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-explicit-r2.json",
+      "tables": [
+        "project_members",
+        "institutions",
+        "countries"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 4,
+        "latencyMs": 172912
+      }
+    },
+    {
+      "request": "requests/C-06-explicit.json",
+      "backend": "gv",
+      "source": "04-cases/gv-c06-explicit-r3.json",
+      "tables": [
+        "institutions",
+        "project_members",
+        "countries"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.countries",
+          "on": "{source}.country_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        }
+      ],
+      "coverage": {
+        "status": "unsatisfied",
+        "missingTypes": [
+          "relation"
+        ]
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "explicit_precheck",
+        "domain": "cordis_eval"
+      },
+      "fastPath": false,
+      "answerGuidancePresent": true,
+      "diagnostic": {
+        "llmCalls": 4,
+        "toolCalls": 6,
+        "latencyMs": 152789
+      }
+    },
+    {
+      "request": "requests/Q1-filter.json",
+      "backend": "pg",
+      "source": "04-cases/pg-new-q1-filter.json",
+      "tables": [
+        "projects",
+        "programmes",
+        "project_programmes"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.parent = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.programme = {target}.code"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 21348
+      }
+    },
+    {
+      "request": "requests/Q1-filter.json",
+      "backend": "gv",
+      "source": "04-cases/gv-new-q1-filter.json",
+      "tables": [
+        "projects",
+        "programmes",
+        "project_programmes"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.parent = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.programme = {target}.code"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 21600
+      }
+    },
+    {
+      "request": "requests/Q2-aggregation.json",
+      "backend": "pg",
+      "source": "04-cases/pg-new-q2-agg.json",
+      "tables": [
+        "projects",
+        "project_programmes",
+        "programmes",
+        "ec_framework_programs"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.parent = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.programme = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.ec_framework_programs",
+          "on": "{source}.framework_program = {target}.ec_framework_program_name"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.code = {source}.programme"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_project"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 14185
+      }
+    },
+    {
+      "request": "requests/Q2-aggregation.json",
+      "backend": "gv",
+      "source": "04-cases/gv-new-q2-agg.json",
+      "tables": [
+        "projects",
+        "project_programmes",
+        "programmes",
+        "ec_framework_programs"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.parent = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_programmes",
+          "right": "cordis_temporary.programmes",
+          "on": "{source}.programme = {target}.code"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.ec_framework_programs",
+          "on": "{source}.framework_program = {target}.ec_framework_program_name"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.programmes",
+          "right": "cordis_temporary.project_programmes",
+          "on": "{target}.code = {source}.programme"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_project"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 11808
+      }
+    },
+    {
+      "request": "requests/Q3-institution-topic.json",
+      "backend": "pg",
+      "source": "04-cases/pg-new-q3-3hop.json",
+      "tables": [
+        "institutions",
+        "projects",
+        "project_members",
+        "topics",
+        "project_topics"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.institution_id"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_topics",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.topics",
+          "on": "{source}.topic = {target}.code"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 8282
+      }
+    },
+    {
+      "request": "requests/Q3-institution-topic.json",
+      "backend": "gv",
+      "source": "04-cases/gv-new-q3-3hop.json",
+      "tables": [
+        "institutions",
+        "projects",
+        "project_members",
+        "topics",
+        "project_topics"
+      ],
+      "joinPaths": [
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.projects",
+          "on": "{source}.project = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.project_members",
+          "right": "cordis_temporary.institutions",
+          "on": "{source}.institution_id = {target}.unics_id"
+        },
+        {
+          "left": "cordis_temporary.institutions",
+          "right": "cordis_temporary.project_members",
+          "on": "{target}.unics_id = {source}.institution_id"
+        },
+        {
+          "left": "cordis_temporary.projects",
+          "right": "cordis_temporary.project_topics",
+          "on": "{target}.unics_id = {source}.project"
+        },
+        {
+          "left": "cordis_temporary.project_topics",
+          "right": "cordis_temporary.topics",
+          "on": "{source}.topic = {target}.code"
+        }
+      ],
+      "coverage": {
+        "status": "degraded",
+        "missingTypes": []
+      },
+      "routing": {
+        "level": "reliable",
+        "triggeredBy": "e1_exact",
+        "domain": "cordis_eval"
+      },
+      "fastPath": true,
+      "answerGuidancePresent": false,
+      "diagnostic": {
+        "llmCalls": 1,
+        "toolCalls": 0,
+        "latencyMs": 11399
+      }
+    }
+  ]
+}

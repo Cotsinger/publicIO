@@ -1,0 +1,85 @@
+{
+  "generation": "v2-002",
+  "cases": [
+    {
+      "id": "C-01",
+      "dimension": "multi-hop",
+      "query": "参与 LS 系列评审组的项目中，有哪些来自西班牙的机构？",
+      "golden_sql": "SELECT DISTINCT i.institutions_name FROM institutions i JOIN project_members pm ON pm.institution_id = i.unics_id JOIN projects p ON p.unics_id = pm.project JOIN project_erc_panels pep ON pep.project = p.unics_id JOIN erc_panels ep ON ep.code = pep.panel JOIN countries c ON c.unics_id = i.country_id WHERE ep.code LIKE 'LS%' AND c.country_name = 'Spain' ORDER BY 1",
+      "expected_ontology": "关系链 Project↔ErcPanel/Institution/Country 串联 6 表；成员角色与国家经值字典定位",
+      "expected_baseline_gap": "ReAct 基线需在 6 表间自行发现 5 条 JOIN 路径",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": "H2"
+    },
+    {
+      "id": "C-02",
+      "dimension": "instance-registered",
+      "query": "缩写为 0MSPIN 的项目的基本信息与参与机构有哪些？",
+      "golden_sql": "SELECT p.acronym, p.title, p.start_date, p.total_cost, i.institutions_name FROM projects p LEFT JOIN project_members pm ON pm.project = p.unics_id LEFT JOIN institutions i ON i.unics_id = pm.institution_id WHERE p.acronym = '0MSPIN' ORDER BY 4 DESC",
+      "expected_ontology": "值字典 matchedValue 精确定位 acronym→projects；titleProperties 透出输出列",
+      "expected_baseline_gap": "基线靠 LIKE 猜列/全表扫 acronym",
+      "data_deps": {"value_dict_registered": true},
+      "superseded_from": "C5"
+    },
+    {
+      "id": "C-03",
+      "dimension": "instance-unregistered",
+      "query": "名称包含 Solvay 的机构参与了哪些项目？",
+      "golden_sql": "SELECT DISTINCT p.acronym, p.title FROM institutions i JOIN project_members pm ON pm.institution_id = i.unics_id JOIN projects p ON p.unics_id = pm.project WHERE i.institutions_name ILIKE '%Solvay%' ORDER BY 1",
+      "expected_ontology": "值字典未命中（institutions_name 未登记）→ isTitle 受控模糊 degraded 如实标注",
+      "expected_baseline_gap": "基线同样可行 → 预期持平（边界如实 case）",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": "C6"
+    },
+    {
+      "id": "C-04",
+      "dimension": "mn-relation",
+      "query": "有哪些项目同时参与了 FETOPEN-1-2014 和 FETOPEN-RIA-2014-2015 两个资助主题？",
+      "golden_sql": "SELECT p.acronym FROM projects p JOIN project_topics pt1 ON pt1.project = p.unics_id AND lower(pt1.topic) = 'fetopen-1-2014' JOIN project_topics pt2 ON pt2.project = p.unics_id AND lower(pt2.topic) = 'fetopen-ria-2014-2015' ORDER BY 1",
+      "expected_ontology": "REVIEWED_BY_PANEL viaTable（project_erc_panels）两腿 JOIN + 双主题交集模式直接给出",
+      "expected_baseline_gap": "基线需自行发现中间表与双重 JOIN 交集模式",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": "H1"
+    },
+    {
+      "id": "C-05",
+      "dimension": "column-aggregation",
+      "query": "各框架计划下分别有多少个不同的项目？",
+      "golden_sql": "SELECT p.framework_program, COUNT(DISTINCT p.unics_id) AS project_count FROM projects p WHERE p.framework_program IS NOT NULL GROUP BY p.framework_program ORDER BY 2 DESC",
+      "expected_ontology": "列级聚合口径（DISTINCT）由列语义引导；与指标登记完全解耦（FR-018）",
+      "expected_baseline_gap": "基线可完成 → 预期持平或本体略优（口径清晰度）",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": "C3"
+    },
+    {
+      "id": "C-06",
+      "dimension": "cross-ontology-ambiguity",
+      "query": "参与机构数量最多的国家有哪些？（参与主体视角）",
+      "golden_sql": "SELECT c.country_name, COUNT(DISTINCT i.unics_id) AS institution_count FROM institutions i JOIN countries c ON c.unics_id = i.country_id GROUP BY c.country_name ORDER BY institution_count DESC LIMIT 5",
+      "expected_ontology": "问句同时命中两视角同名实体（Institution/Country）→ 域投票消歧到 cordis_eval_org",
+      "expected_baseline_gap": "基线无本体概念，跨视角同名实体无消歧机制 → 预期更差",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": null
+    },
+    {
+      "id": "C-07",
+      "dimension": "property-mapping",
+      "query": "按总费用从高到低列出前 5 个项目的缩写、标题和预算",
+      "golden_sql": "SELECT acronym, title, total_cost FROM projects WHERE acronym IS NOT NULL ORDER BY total_cost DESC LIMIT 5",
+      "expected_ontology": "Project 实体 titleProperties(acronym/title) + primaryProperties(total_cost) 直接映射 SELECT+ORDER BY",
+      "expected_baseline_gap": "基线从列描述猜测含义，可能选错列",
+      "data_deps": {"value_dict_registered": false},
+      "superseded_from": "H3"
+    },
+    {
+      "id": "C-08",
+      "dimension": "multi-constraint",
+      "query": "2018 年之后启动的项目中，担任协调方的成员机构按所在国家统计各有多少个？",
+      "golden_sql": "SELECT c.country_name, COUNT(DISTINCT i.unics_id) AS institution_count FROM projects p JOIN project_members pm ON pm.project = p.unics_id AND pm.member_role = 'coordinator' JOIN institutions i ON i.unics_id = pm.institution_id JOIN countries c ON c.unics_id = i.country_id WHERE p.start_date >= DATE '2018-01-01' GROUP BY c.country_name ORDER BY institution_count DESC",
+      "expected_ontology": "复合覆盖维度⑤⑧：时间过滤 + member_role 值字典（coordinator）+ 跨实体聚合分组全链引导",
+      "expected_baseline_gap": "基线需同时理解角色过滤（值字典）、时间过滤、4 表 JOIN 与 GROUP BY",
+      "data_deps": {"value_dict_registered": true},
+      "superseded_from": "H5+H4"
+    }
+  ]
+}

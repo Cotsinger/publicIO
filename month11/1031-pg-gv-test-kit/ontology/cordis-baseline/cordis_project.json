@@ -1,0 +1,444 @@
+{
+  "cordis_project": {
+    "display_name": "CORDIS 项目与经费本体",
+    "description": "本本体定位于欧盟科研资助管理领域，基于 EURIO 官方类目对 CORDIS（欧盟科研信息平台）中的项目与经费知识进行结构化建模。其覆盖范围包括科研项目（projects）、资助方式（funding schemes）、欧盟框架计划（ec framework programs）、经费计划（programmes）以及项目-经费计划关联（project programmes）等核心实体，完整刻画欧盟框架计划体系下科研项目从资助机制到经费归属的多层级语义关系。",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Project",
+        "display_name": "科研项目",
+        "description": "科研项目主表：CORDIS 核心事实表，收录欧盟资助科研项目的简称与全称、所属征集（ec_call）、资助计划（ec_fund_scheme）、CORDIS/EC 参考编号、起止日期与年份及项目官网主页。",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "UNICS编号",
+            "alias_table_name": null,
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "description": "科研项目在 UNICS 中的唯一标识，为该表主键。"
+          },
+          {
+            "api_name": "acronym",
+            "display_name": "项目缩写",
+            "alias_table_name": null,
+            "column_name": "acronym",
+            "data_type": "STRING",
+            "description": "科研项目的缩写名称。"
+          },
+          {
+            "api_name": "title",
+            "display_name": "项目名称",
+            "alias_table_name": null,
+            "column_name": "title",
+            "data_type": "STRING",
+            "description": "科研项目的完整标题。"
+          },
+          {
+            "api_name": "ec_call",
+            "display_name": "EC征集",
+            "alias_table_name": null,
+            "column_name": "ec_call",
+            "data_type": "STRING",
+            "description": "欧盟委员会（EC）项目征集的标识。"
+          },
+          {
+            "api_name": "ec_fund_scheme",
+            "display_name": "EC资助计划",
+            "alias_table_name": null,
+            "column_name": "ec_fund_scheme",
+            "data_type": "STRING",
+            "description": "欧盟委员会（EC）资助计划，作为外键关联。"
+          },
+          {
+            "api_name": "cordis_ref",
+            "display_name": "CORDIS编号",
+            "alias_table_name": null,
+            "column_name": "cordis_ref",
+            "data_type": "STRING",
+            "description": "CORDIS 平台中的项目参考编号。"
+          },
+          {
+            "api_name": "ec_ref",
+            "display_name": "EC参考编号",
+            "alias_table_name": null,
+            "column_name": "ec_ref",
+            "data_type": "STRING",
+            "description": "欧盟委员会（EC）的项目参考编号。"
+          },
+          {
+            "api_name": "start_date",
+            "display_name": "开始日期",
+            "alias_table_name": null,
+            "column_name": "start_date",
+            "data_type": "DATE",
+            "description": "科研项目的开始日期。"
+          },
+          {
+            "api_name": "end_date",
+            "display_name": "结束日期",
+            "alias_table_name": null,
+            "column_name": "end_date",
+            "data_type": "DATE",
+            "description": "科研项目的结束日期。"
+          },
+          {
+            "api_name": "start_year",
+            "display_name": "开始年份",
+            "alias_table_name": null,
+            "column_name": "start_year",
+            "data_type": "INTEGER",
+            "description": "科研项目开始的年份。"
+          },
+          {
+            "api_name": "end_year",
+            "display_name": "结束年份",
+            "alias_table_name": null,
+            "column_name": "end_year",
+            "data_type": "INTEGER",
+            "description": "科研项目计划结束的年份。"
+          },
+          {
+            "api_name": "homepage",
+            "display_name": "项目主页",
+            "alias_table_name": null,
+            "column_name": "homepage",
+            "data_type": "STRING",
+            "description": "科研项目官方网站（homepage）的链接地址。"
+          },
+          {
+            "api_name": "total_cost",
+            "display_name": "总成本",
+            "alias_table_name": null,
+            "column_name": "total_cost",
+            "data_type": "DOUBLE",
+            "description": "科研项目实施的总成本（total cost）金额。"
+          },
+          {
+            "api_name": "ec_max_contribution",
+            "display_name": "欧盟最大资助",
+            "alias_table_name": null,
+            "column_name": "ec_max_contribution",
+            "data_type": "DOUBLE",
+            "description": "欧盟委员会（EC）对该科研项目可提供的最大资助（contribution）金额。"
+          },
+          {
+            "api_name": "framework_program",
+            "display_name": "框架计划",
+            "alias_table_name": null,
+            "column_name": "framework_program",
+            "data_type": "STRING",
+            "description": "项目所属的研发框架计划（framework program），以外键关联对应实体。"
+          },
+          {
+            "api_name": "objective",
+            "display_name": "项目目标",
+            "alias_table_name": null,
+            "column_name": "objective",
+            "data_type": "STRING",
+            "description": "科研项目的研究目标（objective）描述文本。"
+          },
+          {
+            "api_name": "principal_investigator",
+            "display_name": "首席研究员",
+            "alias_table_name": null,
+            "column_name": "principal_investigator",
+            "data_type": "INTEGER",
+            "description": "科研项目的主导研究者（principal investigator），以外键关联对应实体。"
+          }
+        ],
+        "data_sources": {
+          "Project_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.projects",
+            "primary_key_columns": [
+              "unics_id"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "FundingScheme",
+        "display_name": "资助方式",
+        "description": "资助方式字典表，存储欧盟科研资助框架下各类资助工具的代码（code）与官方名称（title），如 ERC-COG、RIA、CSA 等。项目通过关联相应代码，标识其所采用的具体资助机制。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "方式代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "资助方式（funding scheme）的唯一标识代码，作为本表主键，用于关联引用该资助方式。"
+          },
+          {
+            "api_name": "title",
+            "display_name": "方式名称",
+            "alias_table_name": null,
+            "column_name": "title",
+            "data_type": "STRING",
+            "description": "资助方式（funding scheme）的名称或标题，即该代码对应资助方式的可读名称。"
+          }
+        ],
+        "data_sources": {
+          "FundingScheme_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.funding_schemes",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "FrameworkProgram",
+        "display_name": "欧盟框架计划",
+        "description": "CORDIS 中的欧盟框架计划字典表，收录欧盟科研资助框架计划的名称（如 H2020、FP7 等）。该表用于统一标识科研资助项目所依托的欧盟研发框架计划。",
+        "primary_properties": [
+          "ec_framework_program_name"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "ec_framework_program_name",
+            "display_name": "框架计划名称",
+            "alias_table_name": null,
+            "column_name": "ec_framework_program_name",
+            "data_type": "STRING",
+            "description": "欧盟框架计划（EC Framework Programme）的名称，作为主键唯一标识表中每条框架计划记录。"
+          }
+        ],
+        "data_sources": {
+          "FrameworkProgram_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.ec_framework_programs",
+            "primary_key_columns": [
+              "ec_framework_program_name"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "Programme",
+        "display_name": "经费计划",
+        "description": "经费计划主数据：承载欧盟科研资助框架计划及其各级子计划，记录计划代码、标题、简称、RCN 编号及上级计划（parent）等字段，通过父子层级关系刻画计划体系结构。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "经费计划代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "经费计划的唯一标识代码（主键）。"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "记录控制号",
+            "alias_table_name": null,
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "description": "CORDIS 系统中的记录控制号（RCN），用于标识该经费计划记录。"
+          },
+          {
+            "api_name": "title",
+            "display_name": "计划全称",
+            "alias_table_name": null,
+            "column_name": "title",
+            "data_type": "STRING",
+            "description": "经费计划的完整官方名称（title）。"
+          },
+          {
+            "api_name": "short_name",
+            "display_name": "计划简称",
+            "alias_table_name": null,
+            "column_name": "short_name",
+            "data_type": "STRING",
+            "description": "经费计划的简短名称（short name），便于引用与显示。"
+          },
+          {
+            "api_name": "parent",
+            "display_name": "上级计划代码",
+            "alias_table_name": null,
+            "column_name": "parent",
+            "data_type": "STRING",
+            "description": "上级（父级）经费计划的代码（外键），表示计划之间的层级关系。"
+          }
+        ],
+        "data_sources": {
+          "Programme_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.programmes",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectProgramme",
+        "display_name": "项目-经费计划关联",
+        "description": "该表是CORDIS数据库中记录科研项目与经费计划之间归属关系的多对多关联表，核心字段为project（项目）与programme（经费计划），用于建立项目实体与资助计划实体的映射。通过该表可查询一个项目所关联的资助计划，以及某个经费计划下涵盖的科研项目。",
+        "primary_properties": [
+          "project",
+          "programme"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "project",
+            "display_name": "项目标识",
+            "alias_table_name": null,
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "description": "项目标识（project，INTEGER），作为主键/外键标识参与本「项目-经费计划关联」的项目。"
+          },
+          {
+            "api_name": "programme",
+            "display_name": "经费计划",
+            "alias_table_name": null,
+            "column_name": "programme",
+            "data_type": "STRING",
+            "description": "经费计划（programme，STRING），作为主键/外键标识与本关联中项目相对应的经费计划。"
+          }
+        ],
+        "data_sources": {
+          "ProjectProgramme_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_programmes",
+            "primary_key_columns": [
+              "project",
+              "programme"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      }
+    ],
+    "relations": [
+      {
+        "api_name": "PROGRAMME_CHILD_OF_PARENT_PROGRAMME",
+        "display_name": "上级经费计划",
+        "description": "经费计划的自关联关系，指向该计划的上级经费计划。",
+        "source_entity_type": "Programme",
+        "target_entity_type": "Programme",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "parent"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_PROGRAMME_REFERENCES_PROGRAMME",
+        "display_name": "所属经费计划",
+        "description": "项目-经费计划关联记录所归属的经费计划。",
+        "source_entity_type": "ProjectProgramme",
+        "target_entity_type": "Programme",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "programme"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_PROGRAMME_LINKS_PROJECT",
+        "display_name": "关联科研项目",
+        "description": "项目-经费计划关联记录所链接的科研项目。",
+        "source_entity_type": "ProjectProgramme",
+        "target_entity_type": "Project",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "project"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_FUNDED_BY_FUNDING_SCHEME",
+        "display_name": "资助方式",
+        "description": "科研项目获得资助所依据的欧盟委员会资助方式。",
+        "source_entity_type": "Project",
+        "target_entity_type": "FundingScheme",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "ec_fund_scheme"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_BELONGS_TO_FRAMEWORK_PROGRAM",
+        "display_name": "隶属框架计划",
+        "description": "科研项目隶属于某一欧盟框架计划（如地平线2020、地平线欧洲）。",
+        "source_entity_type": "Project",
+        "target_entity_type": "FrameworkProgram",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "framework_program"
+          ],
+          "target_properties": [
+            "ec_framework_program_name"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      }
+    ]
+  }
+}

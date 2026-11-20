@@ -1,0 +1,379 @@
+{
+  "cordis_eval_org": {
+    "display_name": "CORDIS 参与主体视角",
+    "description": "[评估构造] 覆盖 CORDIS 参与主体域（机构/国家/项目成员记录），\n        与 cordis_eval（项目管理视角）同库双视角，用于跨本体消歧端到端评估",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Country",
+        "display_name": "国家（参与主体）",
+        "description": "[评估构造] CORDIS 国家·参与主体视角（countries，同表同名于项目管理视角）",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_name",
+            "display_name": "country_name",
+            "column_name": "country_name",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_code2",
+            "display_name": "country_code2",
+            "column_name": "country_code2",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_code3",
+            "display_name": "country_code3",
+            "column_name": "country_code3",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "geocode_country_code",
+            "display_name": "geocode_country_code",
+            "column_name": "geocode_country_code",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          }
+        ],
+        "data_sources": {
+          "Country_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.countries",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Institution",
+        "display_name": "机构（参与主体）",
+        "description": "[评估构造] CORDIS 机构·参与主体视角（institutions，同表同名于项目管理视角，title=全名）",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [
+          "short_name",
+          "acronym",
+          "country_id",
+          "geocode_regions_3",
+          "unics_id"
+        ],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "country_id",
+            "display_name": "country_id",
+            "column_name": "country_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "institutions_name",
+            "display_name": "institutions_name",
+            "column_name": "institutions_name",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "geocode_regions_3",
+            "display_name": "geocode_regions_3",
+            "column_name": "geocode_regions_3",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "db_pedia_url",
+            "display_name": "db_pedia_url",
+            "column_name": "db_pedia_url",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "wikidata_url",
+            "display_name": "wikidata_url",
+            "column_name": "wikidata_url",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "grid_id",
+            "display_name": "grid_id",
+            "column_name": "grid_id",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "acronym",
+            "display_name": "acronym",
+            "column_name": "acronym",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "short_name",
+            "display_name": "short_name",
+            "column_name": "short_name",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "website",
+            "display_name": "website",
+            "column_name": "website",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "document_vectors",
+            "display_name": "document_vectors",
+            "column_name": "document_vectors",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          }
+        ],
+        "data_sources": {
+          "Institution_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.institutions",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "ProjectMember",
+        "display_name": "项目成员记录",
+        "description": "[评估构造] CORDIS 项目成员记录（project_members，参与主体视角特有实体）",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [
+          "member_name"
+        ],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "project",
+            "display_name": "project",
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "pic_number",
+            "display_name": "pic_number",
+            "column_name": "pic_number",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "rcn",
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "member_name",
+            "display_name": "member_name",
+            "column_name": "member_name",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "activity_type",
+            "display_name": "activity_type",
+            "column_name": "activity_type",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "country",
+            "display_name": "country",
+            "column_name": "country",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "street",
+            "display_name": "street",
+            "column_name": "street",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "city",
+            "display_name": "city",
+            "column_name": "city",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "postal_code",
+            "display_name": "postal_code",
+            "column_name": "postal_code",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "ec_contribution",
+            "display_name": "ec_contribution",
+            "column_name": "ec_contribution",
+            "data_type": "DOUBLE",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "institution_id",
+            "display_name": "institution_id",
+            "column_name": "institution_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "member_role",
+            "display_name": "member_role",
+            "column_name": "member_role",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "geocode_regions_3",
+            "display_name": "geocode_regions_3",
+            "column_name": "geocode_regions_3",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "member_short_name",
+            "display_name": "member_short_name",
+            "column_name": "member_short_name",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "department_name",
+            "display_name": "department_name",
+            "column_name": "department_name",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "vat_number",
+            "display_name": "vat_number",
+            "column_name": "vat_number",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "latitude",
+            "display_name": "latitude",
+            "column_name": "latitude",
+            "data_type": "DOUBLE",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "longitude",
+            "display_name": "longitude",
+            "column_name": "longitude",
+            "data_type": "DOUBLE",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "region_code",
+            "display_name": "region_code",
+            "column_name": "region_code",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          },
+          {
+            "api_name": "region_name",
+            "display_name": "region_name",
+            "column_name": "region_name",
+            "data_type": "STRING",
+            "alias_table_name": "ProjectMember_binding"
+          }
+        ],
+        "data_sources": {
+          "ProjectMember_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_members",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      }
+    ],
+    "relations": [
+      {
+        "api_name": "LOCATED_IN_COUNTRY",
+        "display_name": "LOCATED_IN_COUNTRY",
+        "description": "[评估构造] Institution→Country（MANY_TO_ONE，institutions.country_id FK）",
+        "cardinality": "MANY_TO_ONE",
+        "source_entity_type": "Institution",
+        "target_entity_type": "Country",
+        "mapping_keys": {
+          "source_properties": [
+            "country_id"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "properties": [],
+        "data_sources": {}
+      },
+      {
+        "api_name": "MEMBER_OF_INSTITUTION",
+        "display_name": "MEMBER_OF_INSTITUTION",
+        "description": "[评估构造] ProjectMember→Institution（MANY_TO_ONE，project_members.institution_id FK）",
+        "cardinality": "MANY_TO_ONE",
+        "source_entity_type": "ProjectMember",
+        "target_entity_type": "Institution",
+        "mapping_keys": {
+          "source_properties": [
+            "institution_id"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "properties": [],
+        "data_sources": {}
+      }
+    ]
+  }
+}

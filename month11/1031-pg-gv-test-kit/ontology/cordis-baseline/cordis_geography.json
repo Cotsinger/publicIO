@@ -1,0 +1,133 @@
+{
+  "cordis_geography": {
+    "display_name": "CORDIS 地理参照本体",
+    "description": "CORDIS 地理参照本体是欧盟科研与创新信息服务（CORDIS）中面向地理空间参照的领域本体，依据 EURIO 官方类目体系构建，为科研项目、组织及成果的地理归属提供标准化描述。本体覆盖两类核心实体——国家（countries）与欧盟地域单元（eu territorial units，即 NUTS 行政区划），支撑欧盟资助数据在国家与区域层面的地理标注、聚合与检索分析。",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Country",
+        "display_name": "国家",
+        "description": "国家字典表，收录各国国家名称及其二字母、三字母国家代码与地理编码国家代码，为 CORDIS 科研资助数据中的国家信息提供标准化代码参照。",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "UNICS 标识",
+            "alias_table_name": null,
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "description": "国家记录的唯一标识符（unics id），为 countries 表的主键。"
+          },
+          {
+            "api_name": "country_name",
+            "display_name": "国家名称",
+            "alias_table_name": null,
+            "column_name": "country_name",
+            "data_type": "STRING",
+            "description": "国家的名称。"
+          },
+          {
+            "api_name": "country_code2",
+            "display_name": "两位国家代码",
+            "alias_table_name": null,
+            "column_name": "country_code2",
+            "data_type": "STRING",
+            "description": "国家的两位字母代码（country code2）。"
+          },
+          {
+            "api_name": "country_code3",
+            "display_name": "三位国家代码",
+            "alias_table_name": null,
+            "column_name": "country_code3",
+            "data_type": "STRING",
+            "description": "国家的三位字母代码（country code3）。"
+          },
+          {
+            "api_name": "geocode_country_code",
+            "display_name": "地理编码国家码",
+            "alias_table_name": null,
+            "column_name": "geocode_country_code",
+            "data_type": "STRING",
+            "description": "用于地理编码（geocode）的国家代码。"
+          }
+        ],
+        "data_sources": {
+          "Country_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.countries",
+            "primary_key_columns": [
+              "unics_id"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "TerritorialUnit",
+        "display_name": "欧盟地域单元",
+        "description": "欧盟地域单元参考字典，收录 NUTS 统计区域的地理编码、区域描述、层级及 NUTS 版本信息，用于支撑科研资助数据按欧盟地区维度的归类与统计。",
+        "primary_properties": [
+          "geocode_regions"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "geocode_regions",
+            "display_name": "地理区域编码",
+            "alias_table_name": null,
+            "column_name": "geocode_regions",
+            "data_type": "STRING",
+            "description": "标识欧盟地域单元的地理区域编码（geocode regions），作为表的主键唯一标识。"
+          },
+          {
+            "api_name": "description",
+            "display_name": "描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "对该欧盟地域单元的文字描述说明。"
+          },
+          {
+            "api_name": "geocode_level",
+            "display_name": "地理编码层级",
+            "alias_table_name": null,
+            "column_name": "geocode_level",
+            "data_type": "INTEGER",
+            "description": "该地域单元地理编码（geocode）所处的层级。"
+          },
+          {
+            "api_name": "nuts_version",
+            "display_name": "NUTS版本",
+            "alias_table_name": null,
+            "column_name": "nuts_version",
+            "data_type": "STRING",
+            "description": "该地域单元对应的 NUTS 分类版本。"
+          }
+        ],
+        "data_sources": {
+          "TerritorialUnit_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.eu_territorial_units",
+            "primary_key_columns": [
+              "geocode_regions"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      }
+    ],
+    "relations": []
+  }
+}

@@ -1,0 +1,393 @@
+{
+  "cordis_classification": {
+    "display_name": "CORDIS 科学分类本体",
+    "description": "该本体面向欧盟 CORDIS 科研与创新信息平台的科学分类业务域，基于 EURIO 官方类目体系构建。覆盖研究主题（topics）、学科领域（subject areas）、ERC 学科评审组（erc panels）与 ERC 研究领域（erc research domains）等核心实体，并建模项目与主题、学科领域及 ERC 学科组的关联（project topics、project subject areas、project erc panels），为科研项目的学科归类、主题检索与 ERC 评审分组提供统一语义支撑。",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Topic",
+        "display_name": "研究主题",
+        "description": "CORDIS 研究主题（topics）字典表，收录欧盟科研资助计划下各研究主题的基础信息。每条记录包含主题代码（code）、CORDIS 记录编号（rcn）和主题标题（title），用于唯一标识并描述受资助项目所对应的具体研究主题。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "主题代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "研究主题（topic）的唯一代码标识，为本表主键。"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "RCN记录号",
+            "alias_table_name": null,
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "description": "该研究主题记录在 CORDIS 中的 RCN（Record Control Number）编号。"
+          },
+          {
+            "api_name": "title",
+            "display_name": "主题标题",
+            "alias_table_name": null,
+            "column_name": "title",
+            "data_type": "STRING",
+            "description": "研究主题的标题（title），即该主题的正式名称。"
+          }
+        ],
+        "data_sources": {
+          "Topic_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.topics",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "SubjectArea",
+        "display_name": "学科领域",
+        "description": "学科领域（subject areas）是 CORDIS 中对欧盟科研与创新资助项目按研究领域进行分类的基准字典，用于标识和归类项目所属的学科方向。该表存储各学科领域的代码（code）、名称（title）及描述（description），支撑项目按学科主题的检索与统计。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "学科领域代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "学科领域（subject area）的唯一标识代码，为本表主键。"
+          },
+          {
+            "api_name": "title",
+            "display_name": "学科领域名称",
+            "alias_table_name": null,
+            "column_name": "title",
+            "data_type": "STRING",
+            "description": "学科领域的标题（title），即该领域的名称。"
+          },
+          {
+            "api_name": "description",
+            "display_name": "学科领域描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "学科领域的描述（description）文本，对该领域含义的说明。"
+          }
+        ],
+        "data_sources": {
+          "SubjectArea_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.subject_areas",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectTopic",
+        "display_name": "项目-主题关联",
+        "description": "项目-主题关联表，记录 CORDIS 科研项目与研究主题之间的多对多关联关系。核心字段为 project（项目）与 topic（主题），用于标识项目所归属的研究主题。",
+        "primary_properties": [
+          "project",
+          "topic"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "project",
+            "display_name": "项目编号",
+            "alias_table_name": null,
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "description": "该关联记录所指向的 CORDIS 项目（project）标识，作为外键引用项目表，并与 topic 共同构成联合主键。"
+          },
+          {
+            "api_name": "topic",
+            "display_name": "主题代码",
+            "alias_table_name": null,
+            "column_name": "topic",
+            "data_type": "STRING",
+            "description": "该关联记录所指向的主题（topic）代码，作为外键引用主题相关数据，并与 project 共同构成联合主键。"
+          }
+        ],
+        "data_sources": {
+          "ProjectTopic_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_topics",
+            "primary_key_columns": [
+              "project",
+              "topic"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectSubjectArea",
+        "display_name": "项目-学科领域关联",
+        "description": "CORDIS 中记录科研项目与学科领域之间多对多关联关系的关联表，一个项目可归属多个学科领域，一个学科领域也可涵盖多个项目。核心字段为 project（项目）与 subject_area（学科领域），用于标识各项目所属的学科分类。",
+        "primary_properties": [
+          "project",
+          "subject_area"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "project",
+            "display_name": "项目ID",
+            "alias_table_name": null,
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "description": "关联的项目标识（project，INTEGER），作为外键指向 CORDIS 项目实体，并与 subject_area 共同构成本表的联合主键。"
+          },
+          {
+            "api_name": "subject_area",
+            "display_name": "学科领域",
+            "alias_table_name": null,
+            "column_name": "subject_area",
+            "data_type": "STRING",
+            "description": "关联的学科领域标识（subject area，STRING），作为外键指向学科领域实体，并与 project 共同构成本表的联合主键。"
+          }
+        ],
+        "data_sources": {
+          "ProjectSubjectArea_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_subject_areas",
+            "primary_key_columns": [
+              "project",
+              "subject_area"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ErcPanel",
+        "display_name": "ERC 学科评审组",
+        "description": "欧洲研究理事会（ERC）学科评审组字典表，记录各评审组（Panel）的代码、描述及其所属研究领域，用于对 ERC 科研资助项目按学科方向进行归类与同行评审分组。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "评审组代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "ERC 学科评审组（panel）的唯一标识代码，为本表主键。"
+          },
+          {
+            "api_name": "description",
+            "display_name": "评审组描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "该 ERC 学科评审组的描述说明文本。"
+          },
+          {
+            "api_name": "part_of",
+            "display_name": "所属分组",
+            "alias_table_name": null,
+            "column_name": "part_of",
+            "data_type": "STRING",
+            "description": "标识该评审组从属的上级分组（外键）。"
+          }
+        ],
+        "data_sources": {
+          "ErcPanel_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.erc_panels",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ErcResearchDomain",
+        "display_name": "ERC 研究领域",
+        "description": "欧洲研究理事会（ERC）研究领域分类字典表，存储各研究领域的代码（code）与描述（description），涵盖物理科学与工程、生命科学、社会科学与人文学科等学科领域。该表用于对 ERC 资助的科研项目按研究领域进行分类标识。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "领域代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "ERC 研究领域的唯一代码标识（主键）"
+          },
+          {
+            "api_name": "description",
+            "display_name": "领域描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "ERC 研究领域的文字说明"
+          }
+        ],
+        "data_sources": {
+          "ErcResearchDomain_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.erc_research_domains",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectErcPanel",
+        "display_name": "项目-ERC学科组关联",
+        "description": "记录 CORDIS 项目与 ERC（欧洲研究理事会）评审学科组之间多对多关联的中间表，仅包含 project（项目）与 panel（ERC 学科组）两个核心字段。每条记录将一个项目与其对应的 ERC 评审学科组建立关联，用于标识项目在 ERC 评审体系中所归属的学科组。",
+        "primary_properties": [
+          "project"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "project",
+            "display_name": "项目ID",
+            "alias_table_name": null,
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "description": "关联的项目标识，指向 project 表主键的外键，标识该关联所属的CORDIS项目。"
+          },
+          {
+            "api_name": "panel",
+            "display_name": "ERC学科组",
+            "alias_table_name": null,
+            "column_name": "panel",
+            "data_type": "STRING",
+            "description": "项目所关联的欧洲研究理事会（ERC）评审学科组（panel）代码，为指向 ERC 学科组表的外键。"
+          }
+        ],
+        "data_sources": {
+          "ProjectErcPanel_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_erc_panels",
+            "primary_key_columns": [
+              "project"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      }
+    ],
+    "relations": [
+      {
+        "api_name": "ERC_PANEL_PART_OF_RESEARCH_DOMAIN",
+        "display_name": "学科组隶属研究领域",
+        "description": "表示 ERC 学科评审组通过 part_of 字段隶属于某一 ERC 研究领域的层级归属关系。",
+        "source_entity_type": "ErcPanel",
+        "target_entity_type": "ErcResearchDomain",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "part_of"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_ERC_PANEL_REFERENCES_ERC_PANEL",
+        "display_name": "关联所属学科评审组",
+        "description": "表示项目与 ERC 学科评审组的关联记录指向其所属的具体 ERC 学科评审组。",
+        "source_entity_type": "ProjectErcPanel",
+        "target_entity_type": "ErcPanel",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "panel"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_SUBJECT_AREA_REFERENCES_SUBJECT_AREA",
+        "display_name": "所属学科领域",
+        "description": "项目-学科领域关联表通过学科领域代码（subject_area）引用学科领域表，标识每个关联记录所指向的具体学科领域。",
+        "source_entity_type": "ProjectSubjectArea",
+        "target_entity_type": "SubjectArea",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "subject_area"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_TOPIC_REFERENCES_TOPIC",
+        "display_name": "所属研究主题",
+        "description": "项目-主题关联表通过研究主题代码（topic）引用研究主题表，标识每条关联记录所指向的具体研究主题。",
+        "source_entity_type": "ProjectTopic",
+        "target_entity_type": "Topic",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "topic"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      }
+    ]
+  }
+}

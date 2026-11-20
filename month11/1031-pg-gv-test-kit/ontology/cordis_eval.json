@@ -1,0 +1,684 @@
+{
+  "cordis_eval": {
+    "display_name": "CORDIS 评估域",
+    "description": "[评估构造] 覆盖 CORDIS 科研项目域（项目/机构/人员/国家/计划/主题/ERC 评审组），\n        用于本体检索端到端评估；数据来源 sciencebenchmark catalog.json 派生",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Country",
+        "display_name": "国家",
+        "description": "[评估构造] CORDIS 国家（countries，5 列），catalog.json 派生",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_name",
+            "display_name": "country_name",
+            "column_name": "country_name",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_code2",
+            "display_name": "country_code2",
+            "column_name": "country_code2",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "country_code3",
+            "display_name": "country_code3",
+            "column_name": "country_code3",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          },
+          {
+            "api_name": "geocode_country_code",
+            "display_name": "geocode_country_code",
+            "column_name": "geocode_country_code",
+            "data_type": "STRING",
+            "alias_table_name": "Country_binding"
+          }
+        ],
+        "data_sources": {
+          "Country_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.countries",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "ErcPanel",
+        "display_name": "ERC 评审组",
+        "description": "[评估构造] CORDIS ERC 评审组（erc_panels，3 列），catalog.json 派生",
+        "primary_properties": [
+          "code"
+        ],
+        "title_properties": [
+          "description",
+          "code"
+        ],
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "code",
+            "column_name": "code",
+            "data_type": "STRING",
+            "alias_table_name": "ErcPanel_binding"
+          },
+          {
+            "api_name": "description",
+            "display_name": "description",
+            "column_name": "description",
+            "data_type": "STRING",
+            "alias_table_name": "ErcPanel_binding"
+          },
+          {
+            "api_name": "part_of",
+            "display_name": "part_of",
+            "column_name": "part_of",
+            "data_type": "STRING",
+            "alias_table_name": "ErcPanel_binding"
+          }
+        ],
+        "data_sources": {
+          "ErcPanel_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.erc_panels",
+            "primary_key_columns": [
+              "code"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "FundingScheme",
+        "display_name": "资助方案",
+        "description": "[评估构造] CORDIS 资助方案（funding_schemes），catalog.json 派生",
+        "primary_properties": [
+          "code"
+        ],
+        "title_properties": [],
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "code",
+            "column_name": "code",
+            "data_type": "STRING",
+            "alias_table_name": "FundingScheme_binding"
+          },
+          {
+            "api_name": "title",
+            "display_name": "title",
+            "column_name": "title",
+            "data_type": "STRING",
+            "alias_table_name": "FundingScheme_binding"
+          }
+        ],
+        "data_sources": {
+          "FundingScheme_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.funding_schemes",
+            "primary_key_columns": [
+              "code"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Institution",
+        "display_name": "机构",
+        "description": "[评估构造] CORDIS 机构（institutions，10 列），catalog.json 派生",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [
+          "short_name",
+          "acronym",
+          "country_id",
+          "geocode_regions_3",
+          "unics_id"
+        ],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "country_id",
+            "display_name": "country_id",
+            "column_name": "country_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "institutions_name",
+            "display_name": "institutions_name",
+            "column_name": "institutions_name",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "geocode_regions_3",
+            "display_name": "geocode_regions_3",
+            "column_name": "geocode_regions_3",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "db_pedia_url",
+            "display_name": "db_pedia_url",
+            "column_name": "db_pedia_url",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "wikidata_url",
+            "display_name": "wikidata_url",
+            "column_name": "wikidata_url",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "grid_id",
+            "display_name": "grid_id",
+            "column_name": "grid_id",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "acronym",
+            "display_name": "acronym",
+            "column_name": "acronym",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "short_name",
+            "display_name": "short_name",
+            "column_name": "short_name",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "website",
+            "display_name": "website",
+            "column_name": "website",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          },
+          {
+            "api_name": "document_vectors",
+            "display_name": "document_vectors",
+            "column_name": "document_vectors",
+            "data_type": "STRING",
+            "alias_table_name": "Institution_binding"
+          }
+        ],
+        "data_sources": {
+          "Institution_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.institutions",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Person",
+        "display_name": "人员",
+        "description": "[评估构造] CORDIS 人员（people，2 列），catalog.json 派生",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Person_binding"
+          },
+          {
+            "api_name": "full_name",
+            "display_name": "full_name",
+            "column_name": "full_name",
+            "data_type": "STRING",
+            "alias_table_name": "Person_binding"
+          }
+        ],
+        "data_sources": {
+          "Person_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.people",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Programme",
+        "display_name": "框架计划项目",
+        "description": "[评估构造] CORDIS 框架计划项目（programmes，5 列），catalog.json 派生",
+        "primary_properties": [
+          "code"
+        ],
+        "title_properties": [],
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "code",
+            "column_name": "code",
+            "data_type": "STRING",
+            "alias_table_name": "Programme_binding"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "rcn",
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "alias_table_name": "Programme_binding"
+          },
+          {
+            "api_name": "title",
+            "display_name": "title",
+            "column_name": "title",
+            "data_type": "STRING",
+            "alias_table_name": "Programme_binding"
+          },
+          {
+            "api_name": "short_name",
+            "display_name": "short_name",
+            "column_name": "short_name",
+            "data_type": "STRING",
+            "alias_table_name": "Programme_binding"
+          },
+          {
+            "api_name": "parent",
+            "display_name": "parent",
+            "column_name": "parent",
+            "data_type": "STRING",
+            "alias_table_name": "Programme_binding"
+          }
+        ],
+        "data_sources": {
+          "Programme_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.programmes",
+            "primary_key_columns": [
+              "code"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Project",
+        "display_name": "项目",
+        "description": "[评估构造] CORDIS 项目（projects，17 列），catalog.json 派生",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_properties": [
+          "title",
+          "acronym",
+          "objective",
+          "start_date",
+          "end_date",
+          "total_cost",
+          "ec_max_contribution",
+          "framework_program",
+          "unics_id"
+        ],
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "unics_id",
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "acronym",
+            "display_name": "acronym",
+            "column_name": "acronym",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "title",
+            "display_name": "title",
+            "column_name": "title",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "ec_call",
+            "display_name": "ec_call",
+            "column_name": "ec_call",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "ec_fund_scheme",
+            "display_name": "ec_fund_scheme",
+            "column_name": "ec_fund_scheme",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "cordis_ref",
+            "display_name": "cordis_ref",
+            "column_name": "cordis_ref",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "ec_ref",
+            "display_name": "ec_ref",
+            "column_name": "ec_ref",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "start_date",
+            "display_name": "start_date",
+            "column_name": "start_date",
+            "data_type": "DATE",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "end_date",
+            "display_name": "end_date",
+            "column_name": "end_date",
+            "data_type": "DATE",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "start_year",
+            "display_name": "start_year",
+            "column_name": "start_year",
+            "data_type": "INTEGER",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "end_year",
+            "display_name": "end_year",
+            "column_name": "end_year",
+            "data_type": "INTEGER",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "homepage",
+            "display_name": "homepage",
+            "column_name": "homepage",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "total_cost",
+            "display_name": "total_cost",
+            "column_name": "total_cost",
+            "data_type": "DOUBLE",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "ec_max_contribution",
+            "display_name": "ec_max_contribution",
+            "column_name": "ec_max_contribution",
+            "data_type": "DOUBLE",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "framework_program",
+            "display_name": "framework_program",
+            "column_name": "framework_program",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "objective",
+            "display_name": "objective",
+            "column_name": "objective",
+            "data_type": "STRING",
+            "alias_table_name": "Project_binding"
+          },
+          {
+            "api_name": "principal_investigator",
+            "display_name": "principal_investigator",
+            "column_name": "principal_investigator",
+            "data_type": "INTEGER",
+            "alias_table_name": "Project_binding"
+          }
+        ],
+        "data_sources": {
+          "Project_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.projects",
+            "primary_key_columns": [
+              "unics_id"
+            ]
+          }
+        }
+      },
+      {
+        "api_name": "Topic",
+        "display_name": "主题",
+        "description": "[评估构造] CORDIS 主题（topics，3 列），catalog.json 派生",
+        "primary_properties": [
+          "code"
+        ],
+        "title_properties": [
+          "title"
+        ],
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "code",
+            "column_name": "code",
+            "data_type": "STRING",
+            "alias_table_name": "Topic_binding"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "rcn",
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "alias_table_name": "Topic_binding"
+          },
+          {
+            "api_name": "title",
+            "display_name": "title",
+            "column_name": "title",
+            "data_type": "STRING",
+            "alias_table_name": "Topic_binding"
+          }
+        ],
+        "data_sources": {
+          "Topic_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.topics",
+            "primary_key_columns": [
+              "code"
+            ]
+          }
+        }
+      }
+    ],
+    "relations": [
+      {
+        "api_name": "ADDRESSES_TOPIC",
+        "display_name": "ADDRESSES_TOPIC",
+        "description": "[评估构造] Project→Topic（MANY_TO_MANY，FK#15/16）",
+        "cardinality": "MANY_TO_MANY",
+        "source_entity_type": "Project",
+        "target_entity_type": "Topic",
+        "mapping_keys": {
+          "source_properties": [
+            "project"
+          ],
+          "target_properties": [
+            "topic"
+          ]
+        },
+        "properties": [],
+        "data_sources": {
+          "ADDRESSES_TOPIC_via_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_topics"
+          }
+        }
+      },
+      {
+        "api_name": "AFFILIATED_WITH",
+        "display_name": "AFFILIATED_WITH",
+        "description": "[评估构造] Institution→Country（MANY_TO_ONE，FK#2）",
+        "cardinality": "MANY_TO_ONE",
+        "source_entity_type": "Institution",
+        "target_entity_type": "Country",
+        "mapping_keys": {
+          "source_properties": [
+            "country_id"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "properties": [],
+        "data_sources": {}
+      },
+      {
+        "api_name": "ASSIGNED_PROGRAMME",
+        "display_name": "ASSIGNED_PROGRAMME",
+        "description": "[评估构造] Project→Programme（MANY_TO_MANY，FK#11/12）",
+        "cardinality": "MANY_TO_MANY",
+        "source_entity_type": "Project",
+        "target_entity_type": "Programme",
+        "mapping_keys": {
+          "source_properties": [
+            "project"
+          ],
+          "target_properties": [
+            "programme"
+          ]
+        },
+        "properties": [],
+        "data_sources": {
+          "ASSIGNED_PROGRAMME_via_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_programmes"
+          }
+        }
+      },
+      {
+        "api_name": "COOPERATED_WITH",
+        "display_name": "合作参与",
+        "description": "[评估构造] 项目参与机构（经 project_members 成员表关联）",
+        "cardinality": "MANY_TO_MANY",
+        "source_entity_type": "Project",
+        "target_entity_type": "Institution",
+        "mapping_keys": {
+          "source_properties": [
+            "unics_id"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "properties": [],
+        "data_sources": {
+          "COOPERATED_WITH_via_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_members"
+          }
+        }
+      },
+      {
+        "api_name": "HAS_MEMBER",
+        "display_name": "HAS_MEMBER",
+        "description": "[评估构造] Project→Person（MANY_TO_MANY，FK#6（经成员表关联人员/机构））",
+        "cardinality": "MANY_TO_MANY",
+        "source_entity_type": "Project",
+        "target_entity_type": "Person",
+        "mapping_keys": {
+          "source_properties": [
+            "project"
+          ],
+          "target_properties": [
+            "member"
+          ]
+        },
+        "properties": [],
+        "data_sources": {
+          "HAS_MEMBER_via_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_members"
+          }
+        }
+      },
+      {
+        "api_name": "LED_BY",
+        "display_name": "LED_BY",
+        "description": "[评估构造] Project→Person（MANY_TO_ONE，FK#17）",
+        "cardinality": "MANY_TO_ONE",
+        "source_entity_type": "Project",
+        "target_entity_type": "Person",
+        "mapping_keys": {
+          "source_properties": [
+            "principal_investigator"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "properties": [],
+        "data_sources": {}
+      },
+      {
+        "api_name": "REVIEWED_BY_PANEL",
+        "display_name": "REVIEWED_BY_PANEL",
+        "description": "[评估构造] Project→ErcPanel（MANY_TO_MANY，FK#4/5）",
+        "cardinality": "MANY_TO_MANY",
+        "source_entity_type": "Project",
+        "target_entity_type": "ErcPanel",
+        "mapping_keys": {
+          "source_properties": [
+            "project"
+          ],
+          "target_properties": [
+            "panel"
+          ]
+        },
+        "properties": [],
+        "data_sources": {
+          "REVIEWED_BY_PANEL_via_binding": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_erc_panels"
+          }
+        }
+      }
+    ]
+  }
+}

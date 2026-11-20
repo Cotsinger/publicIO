@@ -1,0 +1,492 @@
+{
+  "cordis_participant": {
+    "display_name": "CORDIS 参与方本体",
+    "description": "CORDIS 参与方本体面向欧盟科研项目管理与参与方分析业务域，基于 EURIO 官方类目体系对科研项目参与主体及其组织关系进行语义建模。本体覆盖科研人员（people）、科研机构（institutions）、项目成员（project members）、项目成员角色（project member roles）及科研活动类型（activity types）五类核心实体，为参与方识别、成员角色归属与科研活动分类提供统一的概念框架。",
+    "data_sources_info": {
+      "cordis_temporary": {
+        "data_source_type": "postgresql",
+        "connection_string": null
+      }
+    },
+    "entities": [
+      {
+        "api_name": "Person",
+        "display_name": "科研人员",
+        "description": "科研人员主数据，收录CORDIS数据库中欧盟科研资助项目参与人员的基本身份信息，核心字段为人员唯一标识（unics_id）与完整姓名（full_name），用于标识项目参与者并支撑人员维度的关联查询。",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "人员唯一ID",
+            "alias_table_name": null,
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "description": "科研人员在 UNICS 系统中的唯一标识符（unics id），为该表主键。"
+          },
+          {
+            "api_name": "full_name",
+            "display_name": "姓名",
+            "alias_table_name": null,
+            "column_name": "full_name",
+            "data_type": "STRING",
+            "description": "科研人员的完整姓名（full name）。"
+          }
+        ],
+        "data_sources": {
+          "Person_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.people",
+            "primary_key_columns": [
+              "unics_id"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "Institution",
+        "display_name": "科研机构",
+        "description": "科研机构主数据：收录参与欧盟科研项目组织机构的名称、缩写、简称、官网及所属国家与 NUTS 三级地理区划，并通过 GRID、DBpedia、Wikidata 外部标识符关联知识库实体，同时保存文档向量以支持语义检索。",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "UNICS标识",
+            "alias_table_name": null,
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "description": "科研机构在 UNICS 中的唯一标识 ID，本表主键。"
+          },
+          {
+            "api_name": "country_id",
+            "display_name": "国家ID",
+            "alias_table_name": null,
+            "column_name": "country_id",
+            "data_type": "INTEGER",
+            "description": "科研机构所属国家的 ID，外键，关联国家表。"
+          },
+          {
+            "api_name": "institutions_name",
+            "display_name": "机构名称",
+            "alias_table_name": null,
+            "column_name": "institutions_name",
+            "data_type": "STRING",
+            "description": "科研机构的完整名称。"
+          },
+          {
+            "api_name": "geocode_regions_3",
+            "display_name": "三级区域码",
+            "alias_table_name": null,
+            "column_name": "geocode_regions_3",
+            "data_type": "STRING",
+            "description": "科研机构所在的三级地理编码区域（geocode region level 3）代码，外键，用于关联地理区域信息。"
+          },
+          {
+            "api_name": "db_pedia_url",
+            "display_name": "DBpedia链接",
+            "alias_table_name": null,
+            "column_name": "db_pedia_url",
+            "data_type": "STRING",
+            "description": "科研机构在 DBpedia 中的实体页面 URL。"
+          },
+          {
+            "api_name": "wikidata_url",
+            "display_name": "Wikidata链接",
+            "alias_table_name": null,
+            "column_name": "wikidata_url",
+            "data_type": "STRING",
+            "description": "科研机构在 Wikidata 中的实体页面 URL。"
+          },
+          {
+            "api_name": "grid_id",
+            "display_name": "GRID标识",
+            "alias_table_name": null,
+            "column_name": "grid_id",
+            "data_type": "STRING",
+            "description": "科研机构的 GRID 标识 ID。"
+          },
+          {
+            "api_name": "acronym",
+            "display_name": "机构缩写",
+            "alias_table_name": null,
+            "column_name": "acronym",
+            "data_type": "STRING",
+            "description": "科研机构的缩写（首字母缩略词）。"
+          },
+          {
+            "api_name": "short_name",
+            "display_name": "机构简称",
+            "alias_table_name": null,
+            "column_name": "short_name",
+            "data_type": "STRING",
+            "description": "科研机构的简短名称。"
+          },
+          {
+            "api_name": "website",
+            "display_name": "机构官网",
+            "alias_table_name": null,
+            "column_name": "website",
+            "data_type": "STRING",
+            "description": "科研机构的官方网站网址。"
+          },
+          {
+            "api_name": "document_vectors",
+            "display_name": "document_vectors",
+            "alias_table_name": null,
+            "column_name": "document_vectors",
+            "data_type": "STRING",
+            "description": "物理列 institutions.document_vectors（tsvector）。作者数据库备份自带物理列（restore.original.sql），未纳入作者语义标注（tables.json/DICTIONARY/catalog 均无）——无业务语义标注，仅物理承接（T015 PHYSEXTRA-001）"
+          }
+        ],
+        "data_sources": {
+          "Institution_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.institutions",
+            "primary_key_columns": [
+              "unics_id"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectMember",
+        "display_name": "项目成员",
+        "description": "项目成员表:记录欧盟科研项目的参与机构成员信息，含成员名称、活动类型、所在国家及详细地址(城市/街道/邮编)。同时存储PIC、RCN、机构ID等标识与欧委会资助金额(ec_contribution)，用于项目与机构主数据的关联及经费核算。",
+        "primary_properties": [
+          "unics_id"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "unics_id",
+            "display_name": "UNICS 标识",
+            "alias_table_name": null,
+            "column_name": "unics_id",
+            "data_type": "INTEGER",
+            "description": "项目成员记录的唯一标识（UNICS ID），作为主键。"
+          },
+          {
+            "api_name": "project",
+            "display_name": "所属项目",
+            "alias_table_name": null,
+            "column_name": "project",
+            "data_type": "INTEGER",
+            "description": "该成员所关联的项目标识（外键，指向项目表）。"
+          },
+          {
+            "api_name": "pic_number",
+            "display_name": "PIC 编号",
+            "alias_table_name": null,
+            "column_name": "pic_number",
+            "data_type": "STRING",
+            "description": "项目成员的 PIC 编号（Participant Identification Code，欧盟参与者识别码）。"
+          },
+          {
+            "api_name": "rcn",
+            "display_name": "RCN 编号",
+            "alias_table_name": null,
+            "column_name": "rcn",
+            "data_type": "STRING",
+            "description": "成员记录的 RCN 编号（Record Control Number，CORDIS 记录控制号）。"
+          },
+          {
+            "api_name": "member_name",
+            "display_name": "成员名称",
+            "alias_table_name": null,
+            "column_name": "member_name",
+            "data_type": "STRING",
+            "description": "项目成员的名称。"
+          },
+          {
+            "api_name": "activity_type",
+            "display_name": "活动类型",
+            "alias_table_name": null,
+            "column_name": "activity_type",
+            "data_type": "STRING",
+            "description": "项目成员的活动类型（外键，关联活动类型分类）。"
+          },
+          {
+            "api_name": "country",
+            "display_name": "国家",
+            "alias_table_name": null,
+            "column_name": "country",
+            "data_type": "STRING",
+            "description": "项目成员所在的国家。"
+          },
+          {
+            "api_name": "street",
+            "display_name": "街道",
+            "alias_table_name": null,
+            "column_name": "street",
+            "data_type": "STRING",
+            "description": "项目成员地址中的街道信息。"
+          },
+          {
+            "api_name": "city",
+            "display_name": "城市",
+            "alias_table_name": null,
+            "column_name": "city",
+            "data_type": "STRING",
+            "description": "项目成员所在的城市。"
+          },
+          {
+            "api_name": "postal_code",
+            "display_name": "邮政编码",
+            "alias_table_name": null,
+            "column_name": "postal_code",
+            "data_type": "STRING",
+            "description": "项目成员地址的邮政编码。"
+          },
+          {
+            "api_name": "ec_contribution",
+            "display_name": "EC出资额",
+            "alias_table_name": null,
+            "column_name": "ec_contribution",
+            "data_type": "DOUBLE",
+            "description": "该项目成员获得的欧盟委员会（EC）资助金额（ec contribution）。"
+          },
+          {
+            "api_name": "institution_id",
+            "display_name": "机构ID",
+            "alias_table_name": null,
+            "column_name": "institution_id",
+            "data_type": "INTEGER",
+            "description": "关联的机构（institution）唯一标识，为外键。"
+          },
+          {
+            "api_name": "member_role",
+            "display_name": "成员角色",
+            "alias_table_name": null,
+            "column_name": "member_role",
+            "data_type": "STRING",
+            "description": "该成员在项目中的角色（member role），为外键。"
+          },
+          {
+            "api_name": "geocode_regions_3",
+            "display_name": "三级地理区划",
+            "alias_table_name": null,
+            "column_name": "geocode_regions_3",
+            "data_type": "STRING",
+            "description": "成员对应的三级地理区划代码（geocode regions 3），为外键。"
+          },
+          {
+            "api_name": "member_short_name",
+            "display_name": "成员简称",
+            "alias_table_name": null,
+            "column_name": "member_short_name",
+            "data_type": "STRING",
+            "description": "项目成员的简短名称（member short name）。"
+          },
+          {
+            "api_name": "department_name",
+            "display_name": "部门名称",
+            "alias_table_name": null,
+            "column_name": "department_name",
+            "data_type": "STRING",
+            "description": "该成员所属部门的名称（department name）。"
+          },
+          {
+            "api_name": "vat_number",
+            "display_name": "VAT税号",
+            "alias_table_name": null,
+            "column_name": "vat_number",
+            "data_type": "STRING",
+            "description": "成员的增值税（VAT）登记号码（vat number）。"
+          },
+          {
+            "api_name": "latitude",
+            "display_name": "纬度",
+            "alias_table_name": null,
+            "column_name": "latitude",
+            "data_type": "STRING",
+            "description": "成员地理位置的纬度（latitude）。"
+          },
+          {
+            "api_name": "longitude",
+            "display_name": "经度",
+            "alias_table_name": null,
+            "column_name": "longitude",
+            "data_type": "STRING",
+            "description": "成员地理位置的经度（longitude）。"
+          },
+          {
+            "api_name": "region_code",
+            "display_name": "region_code",
+            "alias_table_name": null,
+            "column_name": "region_code",
+            "data_type": "STRING",
+            "description": "物理列 project_members.region_code（text）。作者数据库备份自带物理列（restore.original.sql），未纳入作者语义标注（tables.json/DICTIONARY/catalog 均无）——无业务语义标注，仅物理承接（T015 PHYSEXTRA-001）"
+          },
+          {
+            "api_name": "region_name",
+            "display_name": "region_name",
+            "alias_table_name": null,
+            "column_name": "region_name",
+            "data_type": "STRING",
+            "description": "物理列 project_members.region_name（text）。作者数据库备份自带物理列（restore.original.sql），未纳入作者语义标注（tables.json/DICTIONARY/catalog 均无）——无业务语义标注，仅物理承接（T015 PHYSEXTRA-001）"
+          }
+        ],
+        "data_sources": {
+          "ProjectMember_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_members",
+            "primary_key_columns": [
+              "unics_id"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ProjectMemberRole",
+        "display_name": "项目成员角色",
+        "description": "项目成员角色字典表定义欧盟科研项目中参与者的标准角色代码及描述（如协调人、参与者等），用于标识各组织成员在项目中所承担的角色类型。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "角色代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "项目成员角色（project member role）的唯一标识代码，为本表主键。"
+          },
+          {
+            "api_name": "description",
+            "display_name": "角色描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "对项目成员角色（project member role）含义的文字说明。"
+          }
+        ],
+        "data_sources": {
+          "ProjectMemberRole_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.project_member_roles",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      },
+      {
+        "api_name": "ActivityType",
+        "display_name": "科研活动类型",
+        "description": "科研活动类型是 CORDIS 中的基础字典表，存储欧盟科研框架计划下活动类别的代码（code）与对应描述（description）。该表用于对欧盟资助项目所涉及的活动类型进行标准化编码与分类标识。",
+        "primary_properties": [
+          "code"
+        ],
+        "title_property": null,
+        "properties": [
+          {
+            "api_name": "code",
+            "display_name": "类型代码",
+            "alias_table_name": null,
+            "column_name": "code",
+            "data_type": "STRING",
+            "description": "科研活动类型（activity type）的唯一标识代码，STRING 类型，主键。"
+          },
+          {
+            "api_name": "description",
+            "display_name": "类型描述",
+            "alias_table_name": null,
+            "column_name": "description",
+            "data_type": "STRING",
+            "description": "科研活动类型的文字说明，STRING 类型，用于解释该活动类型的含义。"
+          }
+        ],
+        "data_sources": {
+          "ActivityType_primary": {
+            "data_source_name": "cordis_temporary",
+            "full_table_name": "cordis_temporary.unics_cordis.activity_types",
+            "primary_key_columns": [
+              "code"
+            ],
+            "condition": null,
+            "partition_field": null,
+            "period_type": null
+          }
+        }
+      }
+    ],
+    "relations": [
+      {
+        "api_name": "PROJECT_MEMBER_HAS_ACTIVITY_TYPE",
+        "display_name": "成员科研活动类型",
+        "description": "标识项目成员在参与项目时所属的科研活动类型。",
+        "source_entity_type": "ProjectMember",
+        "target_entity_type": "ActivityType",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "activity_type"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_MEMBER_AT_INSTITUTION",
+        "display_name": "成员所属机构",
+        "description": "标识项目成员参与项目时所属的科研机构。",
+        "source_entity_type": "ProjectMember",
+        "target_entity_type": "Institution",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "institution_id"
+          ],
+          "target_properties": [
+            "unics_id"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      },
+      {
+        "api_name": "PROJECT_MEMBER_HAS_ROLE",
+        "display_name": "担任成员角色",
+        "description": "项目成员在科研项目中担任的成员角色（如协调人、参与者等）。",
+        "source_entity_type": "ProjectMember",
+        "target_entity_type": "ProjectMemberRole",
+        "cardinality": "MANY_TO_ONE",
+        "mapping_keys": {
+          "source_properties": [
+            "member_role"
+          ],
+          "target_properties": [
+            "code"
+          ]
+        },
+        "primary_properties": null,
+        "properties": [],
+        "data_sources": null
+      }
+    ]
+  }
+}

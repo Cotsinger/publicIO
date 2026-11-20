@@ -1,0 +1,10 @@
+{
+  "t_semantic_data_table": 19,
+  "t_semantic_data_column": 91,
+  "t_semantic_data_column_value": 4955,
+  "t_semantic_edge_table_has_column": 91,
+  "t_semantic_edge_column_has_value": 0,
+  "t_semantic_edge_column_foreign_key_relationship": 0,
+  "t_semantic_edge_column_join_relationship": 20,
+  "t_semantic_edge_table_join_relationship": 0
+}

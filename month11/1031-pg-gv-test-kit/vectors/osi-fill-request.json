@@ -1,0 +1,7 @@
+{
+  "model": "m3",
+  "logicalTable": "all",
+  "dryRun": false,
+  "batchSize": 64,
+  "upsert": true
+}

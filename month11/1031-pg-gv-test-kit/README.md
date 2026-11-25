@@ -4,6 +4,8 @@
 
 ## 1. 准备 CORDIS 业务表和语义目录
 
+测试中常见的 BGE 本地配置、向量查库、`confidence` 和兜底行为见[转测 FAQ](FAQ.md)。
+
 每个后端使用自己的测试服务和数据库。已经有 `unics_cordis` 的 19 张业务表、`cordis_temporary` 的表列目录、JOIN 边和值字典时，可沿用这批数据。新建测试库时按[数据库准备步骤](business/README.md)恢复本包的 CORDIS 业务数据和目录。检索服务应从测试库读取 `public` 下的语义元数据，配置测试方自己的 LLM 和嵌入服务。开始前确认 `GET /api/semantic/v1/health` 返回 HTTP 200。
 
 ## 2. 从接口导入本体
